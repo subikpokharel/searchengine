@@ -24,5 +24,17 @@
       					<span class="logo-lg"><b>Search </b> Engine</span>
     				</a>
 			</div>
+
+			<div class="col-sm-3 pull-right">
+				<nav class="navbar navbar-static-top pull-right">
+					<ul class="nav navbar-nav">
+						<li class="dropdown user user-menu">
+							<a href="data.php">
+								<span class="hidden-xs"><b><i>View Data</i></b></span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
   		</div>
 		

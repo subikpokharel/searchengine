@@ -54,17 +54,24 @@
 				}				
 
 				echo "Keywords-->".$tags['keywords'];
-
+				echo '<br><br>';
 				//Iterate over the extracted links and display their URLs
                                 foreach ($links as $link){
                                     //Extract and show the "href" attribute.
-                                    echo $link->nodeValue; echo "--------->\t";
-                                    echo $link->getAttribute('href'), '<br>';
+                                    //echo $link->nodeValue; echo "--------->\t";
+					if($link->nodeValue != NULL && !empty($link->nodeValue) && !is_null($link->nodeValue)){
+						echo $link->nodeValue; echo "--------->\t";
+						echo $link->getAttribute('href'), '<br>';
+					}
+					/*else
+						echo $link->getAttribute('alt');
+					*/
+                                    //echo $link->getAttribute('href'), '<br>';
                                 }
 
 
-				$keywordArray = explode(",", $tags['keywords']); //split string with keywords in an array
-				/*foreach($keywordArray as $keyword) //for each entry in the array
+				/*$keywordArray = explode(",", $tags['keywords']); //split string with keywords in an array
+				foreach($keywordArray as $keyword) //for each entry in the array
 				{	
     					echo $this->url.urlencode(trim($keyword)); //echo your URL. Encode the keyword in case special chars are present
 
