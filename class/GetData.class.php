@@ -72,14 +72,14 @@
 					//echo "Keywords-->".$tags['keywords'];
 					$keywordArray = explode(",", $tags['keywords']); //split string with keywords in an array
 
-					$obj->saveKeyword($ref_id, $keywordArray);
-					/*foreach($keywordArray as $keyword) //for each entry in the array
+					//$obj->saveKeyword($ref_id, $keywordArray);
+					foreach($keywordArray as $keyword) //for each entry in the array
 					{	
     						$keyword = (trim($keyword)); //echo your URL. Encode the keyword in case special chars are present
 						$obj->keyword = $keyword;
 						$obj->saveKeyword($ref_id);
 						//echo "<br>";
-					}*/
+					}
 				}
 				else
 					echo "No Keywords";

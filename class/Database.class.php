@@ -42,7 +42,7 @@ class Database {
 
 		$sql = substr($sql, 0, strlen($sql)-1);
 		$sql = $sql.')';
-		//echo $sql;
+		echo $sql;
 		$result = mysql_query($sql);
 
 		if( $result != 1){
@@ -94,7 +94,7 @@ class Database {
 	}
 
 
-	function select_query($sql) {
+	public function select_query($sql) {
 		$this->connect();
 		$res  = $this->conn->query($sql);
 		$data = array();
@@ -103,6 +103,18 @@ class Database {
 
 			}
 		return $data;
+	}
+
+	public function execute_sql($sql){
+		//echo $sql;
+		$this->connect();
+		$result = mysql_query($sql);
+
+                if( $result != 1){
+                                return false ;
+                }else
+                        return $result;
+
 	}
 
 }
