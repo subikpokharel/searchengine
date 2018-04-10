@@ -42,12 +42,20 @@ class Database {
 
 		$sql = substr($sql, 0, strlen($sql)-1);
 		$sql = $sql.')';
-		$this->conn->query($sql);
-		if ($this->conn->insert_id != null) {
+		//echo $sql;
+		$result = mysql_query($sql);
+
+		if( $result != 1){
+                                return false ;
+                }else
+			return $result;
+		//print_r($result);
+		//$this->conn->mysql_query($sql);
+		/*if ($this->conn->insert_id != null) {
 			return $this->conn->insert_id;
 		} else {
 			return false;
-		}
+		}*/
 
 	}
 
@@ -64,6 +72,14 @@ class Database {
 		$sql = substr($sql, 0, strlen($sql)-1);
 
 		$sql  = $sql." from $table";
+
+		if ($condition) {
+			$sql = $sql." where ";
+			foreach ($condition as $key => $value) {
+				$sql = $sql."$key='$value'";
+			}
+		}
+
 		$res	= mysql_query($sql, $this->conn);
 		//echo $sql, '<br>';
 		$data = array();
