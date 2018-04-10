@@ -36,7 +36,7 @@ class Database {
 		$sql = $sql.') values (';
 
 		foreach ($values as $value) {
-			$sql = $sql."'$value',";
+			$sql = $sql."\"$value\",";
 
 		}
 
@@ -92,6 +92,19 @@ class Database {
 	//	}
 		return $data;//"testing";		
 	}
+
+
+	function select_query($sql) {
+		$this->connect();
+		$res  = $this->conn->query($sql);
+		$data = array();
+			while ($a = $res->fetch_object()) {
+				array_push($data, $a);
+
+			}
+		return $data;
+	}
+
 }
 
 ?>

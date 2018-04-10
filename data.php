@@ -10,7 +10,7 @@
 	$data = new DatabaseHelper();
 	$datalist  = $data->selectAllUrls();
 
-	//print_r($datalist);
+	print_r($datalist);
 ?>
 
 
