@@ -42,7 +42,7 @@ class Database {
 
 		$sql = substr($sql, 0, strlen($sql)-1);
 		$sql = $sql.')';
-		echo $sql;
+		//echo $sql;
 		$result = mysql_query($sql);
 
 		if( $result != 1){

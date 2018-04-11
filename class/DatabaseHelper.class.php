@@ -28,16 +28,23 @@
 		public function saveKeyword($id){
 
 			$kw = $this->select('tbl_keywords', array('kw_id'), array('keyword' => $this->keyword));
+			/*print_r( $kw);
+			echo $kw[0][0];*/
 			if($kw[0][kw_id] > 0)
-				$this->insert('tbl_www_index', array('kw_id','url_id'), array($kwid[0][kw_id], $id));
+				$this->insert('tbl_www_index', array('kw_id','url_id'), array($kw[0][kw_id], $id));
 			else{
 				$result = $this->insert('tbl_keywords', array('keyword'), array($this->keyword));
                         	if($result == 1){
                                 	$kw_data = $this->select('tbl_keywords', array('kw_id'), array('keyword' => $this->keyword));
-					//echo $kw_data[0][kw_id], '--';
+				//	echo $kw_data[0][kw_id], '--';
 					if($kw_data[0][kw_id] > 0)
 						$this->insert('tbl_www_index', array('kw_id','url_id'), array($kw_data[0][kw_id], $id));
 				}
 			}
+		}
+
+		public function selectAllKeywords(){
+			return $this->select('tbl_keywords', array('*'));
+		}
 	}
 ?>
