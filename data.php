@@ -10,7 +10,7 @@
 	$data = new DatabaseHelper();
 	$datalist  = $data->selectAllUrls();
 
-	print_r($datalist);
+	//print_r($datalist);
 ?>
 
 
@@ -33,12 +33,19 @@
   				</tr>
 			</thead>
 			<tbody>
-				<?php $i = 1;foreach ($datalist as $dl) {?>
+				<?php  $i = 1;foreach ($datalist as $dl) {?>
 					<tr class="odd gradeX">
 						<td><?php echo $i;?></td>
 					        <td><?php echo $dl[url];?></td>
 					        <td><?php echo $dl[title];?></td>
 						<td><?php echo $dl[description];?></td>
+						<?php $id =  $dl[url_id];
+							$keyList = $data->selectAllKeys($id);
+							//print_r($keyList);
+							//foreach ($keyList as $kl) {
+							//}
+						?>
+						<td><?php  foreach ($keyList as $kl) {?><a href = "."><span><strong><?php echo $kl[keyword];?></strong></span></a><?php echo ' , ';} ?></td>
 					</tr>
 
 				<?php $i++;}?>

@@ -96,12 +96,12 @@ class Database {
 
 	public function select_query($sql) {
 		$this->connect();
-		$res  = $this->conn->query($sql);
+		$res  = mysql_query($sql, $this->conn);
 		$data = array();
-			while ($a = $res->fetch_object()) {
-				array_push($data, $a);
+		while ($a = mysql_fetch_array($res)) {
+			array_push($data, $a);
 
-			}
+		}
 		return $data;
 	}
 

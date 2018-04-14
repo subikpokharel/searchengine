@@ -71,70 +71,52 @@
 				if(trim($tags['keywords']) != ''){
 					//echo "Keywords-->".$tags['keywords'];
 					$keywordArray = explode(",", $tags['keywords']); //split string with keywords in an array
-
-					//$obj->saveKeyword($ref_id, $keywordArray);
-					/*foreach($keywordArray as $keyword) //for each entry in the array
-					{	
-    						$keyword = (trim($keyword)); //echo your URL. Encode the keyword in case special chars are present
-						$obj->keyword = $keyword;
-						$obj->saveKeyword($ref_id);
-						//echo "<br>";
-					}*/
-
-
+					$keywordArray = array_unique(array_map("StrToLower",$keywordArray));
 					$kwDatabase = $obj->selectAllKeywords();
-					//print_r($kwDatabase);
-					//echo '<br>',sizeof($kwDatabase),'<br>';
-					print_r($keywordArray);
-
-					echo '<br><br>';
-					/*for($x = 0; $x<sizeof($keywordArray); $x++)
-						echo array_search($keywordArray[x], $kwDatabase);*/
-					
-					//$result = array_diff($keywordArray, $kwDatabase[0]);
-					echo "yes";
-					//print_r($result);
-					echo '<br>';
 					$resultDKW = array();
 					$resultKWI = array();
-					//print_r($kwDatabase[0]);
 					foreach($kwDatabase as $kd){
-						//echo $kd[keyword].",";
 						array_push($resultDKW, $kd[keyword]);
 						array_push($resultKWI, $kd[kw_id]);
 					}
-					print_r($resultKWI);
-					 echo '<br><br>';
-                                        /*for($x = 0; $x<sizeof($keywordArray); $x++)
-                                                echo array_search($keywordArray[x], $kwDatabase);*/
-					print_r($resultDKW);
-					echo '<br>';
-                                        $result = array_diff($keywordArray, $resultDKW);
-                                        echo "NOOOO Data";
-                                        print_r($result);
-                                        echo '<br>';
-					echo sizeof($result);
 
-					/*for ($x = 0; $x < sizeof($keywordArray); $x++) {
-						print ($keywordArray[x]).',';
-					}*/
+					$resultDKW = array_unique(array_map("StrToLower",$resultDKW));
+					$resultKWI = array_unique(array_map("StrToLower",$resultKWI));
+
+
+                                        $result = array_diff($keywordArray, $resultDKW);
+                                        //echo "NOOOO Data";
+                                        //print_r($result);
+                                        //echo '<br>';
 					$duplicate_ids = array();
 					foreach($keywordArray as $value) {
-						//$i = $i + 1;
 						$index = array_search($value,$resultDKW);
   						if($index>0){
 							array_push($duplicate_ids, $resultKWI[$index]);
-							//echo $resultKWI[$index].'---'.$index.'->';
 						}
 					}
-					echo '<br>';
-					print_r($duplicate_ids);
+					//echo '<br>';
+					//print_r($duplicate_ids);
+
+					//insertduplicatekeyword
+					if(sizeof($duplicate_ids)>0){
+						//echo "We have duplicates";
+						$obj->insertDuplicateKeywords($ref_id, $duplicate_ids);
+					}
+					//insert keywords
+					if(sizeof($result)>0){
+                                                //echo "We have new data";
+						$obj->saveKeyword($ref_id, $result);
+                                        }
+
 
 				}
 				else
 					echo "No Keywords";
 			}
 
+			/*$plain =  file_get_html($hyperlink); 
+			print_r( $plain);*/
 			/*//Iterate over the extracted links and display their URLs
                         foreach ($links as $link){
                          	//Extract and show the "href" attribute.

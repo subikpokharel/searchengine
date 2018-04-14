@@ -25,26 +25,64 @@
 		}
 
 
-		public function saveKeyword($id){
+		public function saveKeyword($id, $array){
 
-			$kw = $this->select('tbl_keywords', array('kw_id'), array('keyword' => $this->keyword));
-			/*print_r( $kw);
-			echo $kw[0][0];*/
-			if($kw[0][kw_id] > 0)
-				$this->insert('tbl_www_index', array('kw_id','url_id'), array($kw[0][kw_id], $id));
-			else{
-				$result = $this->insert('tbl_keywords', array('keyword'), array($this->keyword));
-                        	if($result == 1){
-                                	$kw_data = $this->select('tbl_keywords', array('kw_id'), array('keyword' => $this->keyword));
-				//	echo $kw_data[0][kw_id], '--';
-					if($kw_data[0][kw_id] > 0)
-						$this->insert('tbl_www_index', array('kw_id','url_id'), array($kw_data[0][kw_id], $id));
-				}
+			$Karray = array();
+			$Karray = array_unique(array_map("StrToLower",$array));
+			$sql = "INSERT INTO tbl_keywords (keyword) VALUES ";
+			foreach($Karray as $kw){
+				$sql = $sql."('$kw'),";
 			}
+			$sql = substr($sql, 0, strlen($sql)-1);	
+			$result = $this->execute_sql($sql);
+			if($result == 1){
+				$sql = "SELECT kw_id FROM tbl_keywords WHERE keyword in (";
+				foreach($Karray as $kw){
+                	                $sql = $sql."'$kw',";
+		                }
+				$sql = substr($sql, 0, strlen($sql)-1);
+				$sql = $sql.")";
+				$ids = $this->select_query($sql);
+				$ref_id = array();
+				foreach($ids as $value)
+					array_push($ref_id, $value[0]);
+
+				$sql = "INSERT INTO tbl_www_index (kw_id, url_id) VALUES ";
+				foreach($ref_id as $ri){
+        	                        $sql = $sql."('$ri','$id'),";
+	        	        }
+                        	$sql = substr($sql, 0, strlen($sql)-1);
+                        	$this->execute_sql($sql);
+
+			}
+
+		}
+
+
+		public function insertDuplicateKeywords($id, $array){
+			//$array = array_unique(array_map("StrToLower",$array));
+			//print_r($array);
+			$sql = "INSERT INTO tbl_www_index (kw_id, url_id) VALUES ";
+			foreach ($array as $a)
+				$sql = $sql."('$a','$id'),";
+			$sql = substr($sql, 0, strlen($sql)-1);
+			//echo $sql;
+			$this->execute_sql($sql);
 		}
 
 		public function selectAllKeywords(){
 			return $this->select('tbl_keywords', array('*'));
+		}
+
+
+		public function selectAllKeys($id){
+			/*$sql = "SELECT a.url_id,b.url, b.title, b.description, c.keyword FROM tbl_www_index a ";
+			$sql .= "JOIN tbl_urls b ON a.url_id = b.url_id ";
+			$sql .= "JOIN tbl_keywords c ON a.kw_id = c.kw_id ";
+			//echo $sql;*/
+
+			$sql = "SELECT c.keyword FROM tbl_www_index a JOIN tbl_keywords c ON a.kw_id = c.kw_id where a.url_id = $id ";
+			return($this->select_query($sql));
 		}
 	}
 ?>
