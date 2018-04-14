@@ -65,8 +65,10 @@
 			$nodes = $dom->getElementsByTagName('title');
 			$obj->title = $nodes->item(0)->nodeValue;
 			$tags = get_meta_tags($hyperlink);
+
+			//print_r($tags);
 			
-			if(trim($tags['description'])!='') //if description is set and not empty
+			if(isset($tags['description']) && trim($tags['description'])!='') //if description is set and not empty
 			{
 				$obj->description = $tags['description'];
 			}else
@@ -75,8 +77,33 @@
 			$obj->url = $hyperlink;
 
 
-			echo(strip_tags($html));
+			echo(strip_tags(html_entity_decode($html)));
 			echo "<br><br>";
+
+
+			$tempo = strip_tags($html);
+			echo strlen($tempo);
+
+			echo "<br><br>";
+
+
+			$body = $dom->getElementsByTagName('body')->item(0);
+
+			echo $body->textContent; // print all the text content in the body
+
+
+
+
+			/*if(preg_match('~<body[^>]*>(.*?)</body>~si', $html, $body)){
+				echo($body[1]);
+			}*/
+
+
+			
+			//echo preg_replace("/<(.*?)>/", "", $html);
+
+			/*preg_match_all('#<b.*?>(.*?)</b>#i',$html,$ar);   
+			print_r($ar);*/
 
 /*
 			//insert the url into the database
