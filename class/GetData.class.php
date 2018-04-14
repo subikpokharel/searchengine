@@ -18,9 +18,20 @@
 				$meta    = array( ";", ">", ">>", ";", "*", "?", "&", "|" );
 				$this->url= str_replace( $meta, "", $this->url );
 
-				$this->extractData($this->url);
+				if (filter_var($this->url, FILTER_VALIDATE_URL)) {
+				    $this->extractData($this->url);
+				} else {
+				    return ("$url is not a valid URL");
+				}
+				//$this->extractData($this->url);
 
-				/*if($links->length > 0)
+				/*
+				if (filter_var($url, FILTER_VALIDATE_URL)) {
+    echo("$url is a valid URL");
+} else {
+    echo("$url is not a valid URL");
+}
+				if($links->length > 0)
 					return "Data success";
 				else
 					return "No Data in the URL entered";*/
@@ -62,10 +73,15 @@
 				$obj->description = "The page has no description";
 
 			$obj->url = $hyperlink;
-			//echo "data-->".$obj->url;
+
+
+			echo(strip_tags($html));
+			echo "<br><br>";
+
+/*
+			//insert the url into the database
 			$id = $obj->saveUrls();
-			foreach ($id as $dl)
-				$ref_id = $dl[url_id];
+			$ref_id = $id[0][0];
 
 			if($ref_id > 0){
 				if(trim($tags['keywords']) != ''){
@@ -75,28 +91,27 @@
 					$kwDatabase = $obj->selectAllKeywords();
 					$resultDKW = array();
 					$resultKWI = array();
+					//seperate keywords and its ids into 2 different arrays
 					foreach($kwDatabase as $kd){
 						array_push($resultDKW, $kd[keyword]);
 						array_push($resultKWI, $kd[kw_id]);
 					}
 
+
 					$resultDKW = array_unique(array_map("StrToLower",$resultDKW));
 					$resultKWI = array_unique(array_map("StrToLower",$resultKWI));
 
+					//extract the keyword that are not there inside the database
+                    $result = array_diff($keywordArray, $resultDKW);
 
-                                        $result = array_diff($keywordArray, $resultDKW);
-                                        //echo "NOOOO Data";
-                                        //print_r($result);
-                                        //echo '<br>';
 					$duplicate_ids = array();
+					//for all keywords in database extract the keyword ids of those which match the keywords in the page
 					foreach($keywordArray as $value) {
 						$index = array_search($value,$resultDKW);
   						if($index>0){
 							array_push($duplicate_ids, $resultKWI[$index]);
 						}
 					}
-					//echo '<br>';
-					//print_r($duplicate_ids);
 
 					//insertduplicatekeyword
 					if(sizeof($duplicate_ids)>0){
@@ -107,14 +122,13 @@
 					if(sizeof($result)>0){
                                                 //echo "We have new data";
 						$obj->saveKeyword($ref_id, $result);
-                                        }
-
+                    }
 
 				}
 				else
 					echo "No Keywords";
 			}
-
+*/
 			/*$plain =  file_get_html($hyperlink); 
 			print_r( $plain);*/
 			/*//Iterate over the extracted links and display their URLs
