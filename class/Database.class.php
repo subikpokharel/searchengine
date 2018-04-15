@@ -13,8 +13,8 @@ class Database {
         	$this->conn = mysql_connect( $host, $userid, $password );
 
 		//$this->conn = new mysql('localhost', 'root', 'basanta', 'db_class_430_newsportal');
-		if ($this->conn->connect_errno != 0) {
-		//if(!$this->conn){
+		//if ($this->conn->connect_errno != 0) {
+		if(!$this->conn){
 			die('database connection error');
 		}
 		else

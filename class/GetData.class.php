@@ -76,42 +76,23 @@
 
 			$obj->url = $hyperlink;
 
-
-			echo(strip_tags(html_entity_decode($html)));
-			echo "<br><br>";
-
-
-			$tempo = strip_tags($html);
-			echo strlen($tempo);
-
-			echo "<br><br>";
-
-
-			$body = $dom->getElementsByTagName('body')->item(0);
-
-			echo $body->textContent; // print all the text content in the body
-
-
-
-
-			/*if(preg_match('~<body[^>]*>(.*?)</body>~si', $html, $body)){
-				echo($body[1]);
-			}*/
-
-
 			
-			//echo preg_replace("/<(.*?)>/", "", $html);
+			
+			//$body= str_replace( $meta, "", $body );
+			//print_r($body);
 
-			/*preg_match_all('#<b.*?>(.*?)</b>#i',$html,$ar);   
-			print_r($ar);*/
 
-/*
+
 			//insert the url into the database
 			$id = $obj->saveUrls();
 			$ref_id = $id[0][0];
 
 			if($ref_id > 0){
-				if(trim($tags['keywords']) != ''){
+
+				$keywordArray = $this->getKeywords($html, $tags);
+
+
+				/*if(trim($tags['keywords']) != ''){
 					//echo "Keywords-->".$tags['keywords'];
 					$keywordArray = explode(",", $tags['keywords']); //split string with keywords in an array
 					$keywordArray = array_unique(array_map("StrToLower",$keywordArray));
@@ -153,9 +134,9 @@
 
 				}
 				else
-					echo "No Keywords";
+					echo "No Keywords";*/
 			}
-*/
+
 			/*$plain =  file_get_html($hyperlink); 
 			print_r( $plain);*/
 			/*//Iterate over the extracted links and display their URLs
@@ -176,7 +157,52 @@
                                         echo $link->getAttribute('href'), '<br>';
                                 }
                         }*/	
-		} 
+		}
+
+
+
+		public function getKeywords($html, $tags)
+		 {
+		 	//extracting the body of the url
+			$url_body = strip_tags(html_entity_decode($html));
+			//echo ($url_body);
+			$meta    = array( ";", ">", ">>", ";", "*", "?", "&", "|", ":", "(", ")", ".", "'", ",", "{", "}" );
+			$url_body = str_replace($meta, '', $url_body);
+			$url_body = explode(" ", $url_body);
+			//$body = preg_split("/[;,]\n/", $url_body);
+			echo "<br><br>";
+			$url_body = array_unique(array_map("StrToLower",$url_body));
+			$url_body = array_filter($url_body);
+			print_r($url_body);
+			echo "<br><br>";
+
+
+			if(isset($tags['keywords']) && trim($tags['keywords']) != ''){
+				$keywordTemp = explode(",", $tags['keywords']); //split string with keywords in an array
+				$keywordTemp = array_unique(array_map("StrToLower",$keywordTemp));
+				print_r($keywordTemp);
+				$keywordTemp = array_merge($url_body);
+				echo "<br><br>";
+				print_r($keywordTemp);
+			}else{
+				//echo "No Keyword tag";
+				$keywordTemp = array_merge($url_body);
+				echo "<br><br>";
+				print_r($keywordTemp);
+			}
+
+			//remove empty strings and long words
+			foreach ($keywordTemp as $key=>&$value) {
+				//echo(strlen($value)).' ';
+			    if (strlen($value) > 30 || strlen($value) < 3) {
+			        unset($keywordTemp[$key]);
+			    }
+			}
+			$keywordArray = array_merge($keywordTemp);
+			echo "<br><br>";
+			print_r($keywordArray);
+			return $keywordArray;
+		 } 
 	}
 
 ?>
