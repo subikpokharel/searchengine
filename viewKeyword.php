@@ -25,7 +25,7 @@
 <br/>
 <!-- This is game list page.-->
 <div class="box-header with-border">
-              <h2 class="box-title"><strong>Selected Keyword: <i><?php echo ucfirst($keywordlist[0]['keyword']); ?></i> </strong></h2>
+              <h2 class="box-title"><strong>Selected Keyword: "<font color="#9932CC"><i><?php echo ucfirst($keywordlist[0]['keyword']); ?></i></font>" </strong></h2>
 </div>
 <br/>
 <div id="box-body">

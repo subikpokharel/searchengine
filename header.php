@@ -25,6 +25,19 @@
     				</a>
 			</div>
 
+			<div class="col-sm-4 pull-center">
+				<nav class="navbar navbar-static-top pull-right">
+					<ul class="nav navbar-nav">
+
+						<li class="dropdown user user-menu">
+							<a href="reset.php">
+								<span class="hidden-xs btn btn-danger">Reset The System</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+
 			<div class="col-sm-3 pull-right">
 				<nav class="navbar navbar-static-top pull-right">
 					<ul class="nav navbar-nav">
@@ -37,4 +50,3 @@
 				</nav>
 			</div>
   		</div>
-		

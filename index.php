@@ -31,6 +31,7 @@
 ?>
 
 
+
 <div class = "row" style=" margin-top:50px;">
 	<div class = "col-md-2"></div>
 	<?php if (isset($err['searchBar'])) {?>

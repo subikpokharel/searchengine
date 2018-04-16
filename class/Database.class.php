@@ -120,6 +120,22 @@ class Database {
 
 	}
 
+
+	public function resetSystem()
+	{
+		$this->connect();
+		$sql = " SET FOREIGN_KEY_CHECKS = 0; ";
+		mysql_query($sql, $this->conn);
+		$sql = " truncate table tbl_urls; ";
+		mysql_query($sql, $this->conn);
+		$sql = " truncate table tbl_keywords; ";
+		mysql_query($sql, $this->conn);
+		$sql = " truncate table tbl_www_index; ";
+		mysql_query($sql, $this->conn);
+		$sql = " SET FOREIGN_KEY_CHECKS = 1; ";
+		mysql_query($sql, $this->conn);
+	}
+
 }
 
 ?>

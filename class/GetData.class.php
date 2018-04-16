@@ -80,12 +80,12 @@
 
 			$obj->url = $hyperlink;
 
-			$keywordArray = $this->getKeywords($html, $tags);
-			$this->removeStopWords($keywordArray);
-			//print_r($keywordArray);
+			/*$tempKeywordArray = $this->getKeywords($html, $tags);
+			$keywordArray = $this->removeStopWords($tempKeywordArray);
+			print_r($keywordArray);*/
 			
 
-/*			//insert the url into the database
+			//insert the url into the database
 			$id = $obj->saveUrls();
 			$ref_id = $id[0][0];
 
@@ -93,7 +93,9 @@
 			if($ref_id > 0){
 
 				//extrack all the keywords from the webpage or URL
-				$keywordArray = $this->getKeywords($html, $tags);
+				//$keywordArray = $this->getKeywords($html, $tags);
+				$tempKeywordArray = $this->getKeywords($html, $tags);
+				$keywordArray = $this->removeStopWords($tempKeywordArray);
 
 				$kwDatabase = $obj->selectAllKeywords();
 				$resultDKW = array();
@@ -133,7 +135,7 @@
 					$obj->saveKeyword($ref_id, $result);
                 }
 			}
-*/
+
 			/*$plain =  file_get_html($hyperlink); 
 			print_r( $plain);*/
 			/*//Iterate over the extracted links and display their URLs
@@ -213,11 +215,12 @@
 				//echo ($line);
 			}
 			fclose($file);
-			print_r($words);
-			echo "<br>";
-			echo "<br>";
 
-			print_r($array);
+			$result_array = array_merge(array_diff($array, $words));
+
+			return $result_array;
+
+
 		 }
 	}
 
