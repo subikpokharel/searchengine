@@ -76,12 +76,8 @@
 
 			$obj->url = $hyperlink;
 
+			//$keywordArray = $this->getKeywords($html, $tags);
 			
-			
-			//$body= str_replace( $meta, "", $body );
-			//print_r($body);
-
-
 
 			//insert the url into the database
 			$id = $obj->saveUrls();
@@ -89,52 +85,48 @@
 
 			if($ref_id > 0){
 
+				//extrack all the keywords from the webpage or URL
 				$keywordArray = $this->getKeywords($html, $tags);
-
-
-				/*if(trim($tags['keywords']) != ''){
-					//echo "Keywords-->".$tags['keywords'];
-					$keywordArray = explode(",", $tags['keywords']); //split string with keywords in an array
-					$keywordArray = array_unique(array_map("StrToLower",$keywordArray));
-					$kwDatabase = $obj->selectAllKeywords();
-					$resultDKW = array();
-					$resultKWI = array();
-					//seperate keywords and its ids into 2 different arrays
-					foreach($kwDatabase as $kd){
-						array_push($resultDKW, $kd[keyword]);
-						array_push($resultKWI, $kd[kw_id]);
-					}
-
-
-					$resultDKW = array_unique(array_map("StrToLower",$resultDKW));
-					$resultKWI = array_unique(array_map("StrToLower",$resultKWI));
-
-					//extract the keyword that are not there inside the database
-                    $result = array_diff($keywordArray, $resultDKW);
-
-					$duplicate_ids = array();
-					//for all keywords in database extract the keyword ids of those which match the keywords in the page
-					foreach($keywordArray as $value) {
-						$index = array_search($value,$resultDKW);
-  						if($index>0){
-							array_push($duplicate_ids, $resultKWI[$index]);
-						}
-					}
-
-					//insertduplicatekeyword
-					if(sizeof($duplicate_ids)>0){
-						//echo "We have duplicates";
-						$obj->insertDuplicateKeywords($ref_id, $duplicate_ids);
-					}
-					//insert keywords
-					if(sizeof($result)>0){
-                                                //echo "We have new data";
-						$obj->saveKeyword($ref_id, $result);
-                    }
-
+				//echo "<br><br>";
+				//print_r($keywordArray);
+				//echo "<br><br>";
+				$kwDatabase = $obj->selectAllKeywords();
+				$resultDKW = array();
+				$resultKWI = array();
+				//seperate keywords and its ids into 2 different arrays
+				foreach($kwDatabase as $kd){
+					array_push($resultDKW, $kd['keyword']);
+					array_push($resultKWI, $kd['kw_id']);
 				}
-				else
-					echo "No Keywords";*/
+
+				//extract the keyword that are not there inside the database
+                $result = array_diff($keywordArray, $resultDKW);
+
+                $duplicate_ids = array();
+				//for all keywords in database extract the keyword ids of those which match the keywords in the page
+				foreach($keywordArray as $value) {
+					$index = array_search($value,$resultDKW);
+  					if($index>0){
+						array_push($duplicate_ids, $resultKWI[$index]);
+					}
+				}
+
+				//insertduplicatekeyword
+				if(sizeof($duplicate_ids)>0){
+					//echo "We have duplicates";
+					$duplicate_ids = array_unique($duplicate_ids);
+					echo "<br> Duplicates";
+					print_r($duplicate_ids);
+					$obj->insertDuplicateKeywords($ref_id, $duplicate_ids);
+				}
+				//insert keywords
+				if(sizeof($result)>0){
+                	//echo "We have new data";
+                	$result = array_unique($result);
+                	echo "<br>New Keys";
+                	print_r($result);
+					$obj->saveKeyword($ref_id, $result);
+                }
 			}
 
 			/*$plain =  file_get_html($hyperlink); 
@@ -165,42 +157,40 @@
 		 {
 		 	//extracting the body of the url
 			$url_body = strip_tags(html_entity_decode($html));
-			//echo ($url_body);
-			$meta    = array( ";", ">", ">>", ";", "*", "?", "&", "|", ":", "(", ")", ".", "'", ",", "{", "}" );
+			//preg_match('~<body[^>]*>(.*?)</body>~si', $html, $url_body);
+			$meta    = array( ";", ">", ">>", ";", "*", "?", "&", "|", ":", "(", ")", ".", "'", ",", "{", "}", "“","”", "+", "‘","’" );
 			$url_body = str_replace($meta, '', $url_body);
+			$url_body = preg_replace("/[^a-zA-Z 0-9]+/", "", $url_body);
 			$url_body = explode(" ", $url_body);
-			//$body = preg_split("/[;,]\n/", $url_body);
-			echo "<br><br>";
 			$url_body = array_unique(array_map("StrToLower",$url_body));
 			$url_body = array_filter($url_body);
-			print_r($url_body);
-			echo "<br><br>";
 
 
 			if(isset($tags['keywords']) && trim($tags['keywords']) != ''){
 				$keywordTemp = explode(",", $tags['keywords']); //split string with keywords in an array
 				$keywordTemp = array_unique(array_map("StrToLower",$keywordTemp));
-				print_r($keywordTemp);
 				$keywordTemp = array_merge($url_body);
-				echo "<br><br>";
-				print_r($keywordTemp);
 			}else{
-				//echo "No Keyword tag";
 				$keywordTemp = array_merge($url_body);
-				echo "<br><br>";
-				print_r($keywordTemp);
 			}
+
+			$keywordTemp = array_map('trim',$keywordTemp);
 
 			//remove empty strings and long words
 			foreach ($keywordTemp as $key=>&$value) {
-				//echo(strlen($value)).' ';
-			    if (strlen($value) > 30 || strlen($value) < 3) {
+				    if (strlen($value) > 30 || strlen($value) < 3  || !preg_match('/\S/', $value)) {
 			        unset($keywordTemp[$key]);
 			    }
 			}
 			$keywordArray = array_merge($keywordTemp);
+			/*echo mb_convert_encoding($keywordArray, 'ISO-8859-1','utf-8');
 			echo "<br><br>";
-			print_r($keywordArray);
+			echo mb_convert_encoding($keywordArray, 'HTML-ENTITIES', 'utf-8')."\n\n";
+			echo "<br><br>";
+			echo htmlspecialchars_decode(utf8_decode(htmlentities($keywordArray, ENT_COMPAT, 'utf-8', false)));*/
+			
+			$keywordArray =  array_map("utf8_encode", $keywordArray );
+
 			return $keywordArray;
 		 } 
 	}

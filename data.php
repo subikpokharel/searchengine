@@ -34,18 +34,22 @@
 			</thead>
 			<tbody>
 				<?php  $i = 1;foreach ($datalist as $dl) {?>
-					<tr class="odd gradeX">
-						<td><?php echo $i;?></td>
-					        <td><?php echo $dl[url];?></td>
-					        <td><?php echo $dl[title];?></td>
-						<td><?php echo $dl[description];?></td>
-						<?php $id =  $dl[url_id];
+					<tr class="odd gradeX" align="justify">
+						<td ><?php echo $i;?></td>
+					    <td><?php echo $dl['url'];?></td>
+					    <td><?php echo $dl['title'];?></td>
+						<td><?php echo $dl['description'];?></td>
+						<?php $id =  $dl['url_id'];
 							$keyList = $data->selectAllKeys($id);
-							//print_r($keyList);
-							//foreach ($keyList as $kl) {
-							//}
+							$j = 0;	$length = sizeof($keyList);
 						?>
-						<td><?php  foreach ($keyList as $kl) {?><a href = "."><span><strong><?php echo $kl[keyword];?></strong></span></a><?php echo ' , ';} ?></td>
+						<td><?php  foreach ($keyList as $kl) {?><a href = "."><span><strong><?php echo $kl['keyword'];?></strong></span></a>
+							<?php $j++;
+							 	if($j<$length)
+									echo ', ';
+								else
+									echo '.';} ?>
+						</td>
 					</tr>
 
 				<?php $i++;}?>

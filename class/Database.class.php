@@ -95,6 +95,8 @@ class Database {
 
 
 	public function select_query($sql) {
+		//echo($sql);
+		//echo "<br>";
 		$this->connect();
 		$res  = mysql_query($sql, $this->conn);
 		$data = array();
@@ -107,13 +109,14 @@ class Database {
 
 	public function execute_sql($sql){
 		//echo $sql;
+		//echo "<br><br>";
 		$this->connect();
-		$result = mysql_query($sql);
+		$result = mysql_query($sql, $this->conn);
 
-                if( $result != 1){
-                                return false ;
-                }else
-                        return $result;
+        if( $result != 1){
+            return false ;
+        }else
+            return $result;
 
 	}
 
