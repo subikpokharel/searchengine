@@ -63,7 +63,11 @@
 			$links = $dom->getElementsByTagName('a');
 			
 			$nodes = $dom->getElementsByTagName('title');
-			$obj->title = $nodes->item(0)->nodeValue;
+			if (isset($nodes->item(0)->nodeValue) && trim($nodes->item(0)->nodeValue) != '') {
+				$obj->title = $nodes->item(0)->nodeValue;
+			}else
+				$obj->title = "The page has no title.";
+			
 			$tags = get_meta_tags($hyperlink);
 
 			//print_r($tags);
@@ -72,7 +76,7 @@
 			{
 				$obj->description = $tags['description'];
 			}else
-				$obj->description = "The page has no description";
+				$obj->description = "The page has no description.";
 
 			$obj->url = $hyperlink;
 
