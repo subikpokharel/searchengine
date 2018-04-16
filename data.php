@@ -31,7 +31,6 @@
     				<th>URL</th> 
     				<th>Title</th>
 					<th>Description</th>
-					<th>Keywords</th>
   				</tr>
 			</thead>
 			
@@ -39,20 +38,10 @@
 				<?php  $i = 1;foreach ($datalist as $dl) {?>
 					<tr class="odd gradeX" align="justify">
 						<td ><?php echo $i;?></td>
-					    <td><?php echo $dl['url'];?></td>
+					    <td><a href="viewUrl.php?id=<?php echo($dl['url_id']); ?>"><strong><?php echo $dl['url'];?></strong></a></td>
 					    <td><?php echo $dl['title'];?></td>
 						<td><?php echo $dl['description'];?></td>
-						<?php $id =  $dl['url_id'];
-							$keyList = $data->selectAllKeys($id);
-							$j = 0;	$length = sizeof($keyList);
-						?>
-						<td><?php  foreach ($keyList as $kl) {?><a href = "viewKeyword.php?id=<?php echo $kl['kw_id']; ?>"><span><strong><?php echo $kl['keyword'];?></strong></span></a>
-							<?php $j++;
-							 	if($j<$length)
-									echo ', ';
-								else
-									echo '.';} ?>
-						</td>
+						
 					</tr>
 
 				<?php $i++;}?>
