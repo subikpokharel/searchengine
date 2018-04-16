@@ -44,8 +44,7 @@
 
 		private function extractData($hyperlink){
 
-			//$data = new GetData();
-			//$id = $data->insert();
+
 			$obj = new DatabaseHelper();
 
 			//echo $hyperlink;
@@ -62,6 +61,7 @@
 			//like 'img' or 'table', to extract other tags.
 			$links = $dom->getElementsByTagName('a');
 			
+			//extracting title from the hyperlink
 			$nodes = $dom->getElementsByTagName('title');
 			if (isset($nodes->item(0)->nodeValue) && trim($nodes->item(0)->nodeValue) != '') {
 				$obj->title = $nodes->item(0)->nodeValue;
@@ -70,8 +70,8 @@
 			
 			$tags = get_meta_tags($hyperlink);
 
-			//print_r($tags);
-			
+
+			//extracting the page description from the url if present
 			if(isset($tags['description']) && trim($tags['description'])!='') //if description is set and not empty
 			{
 				$obj->description = $tags['description'];
@@ -80,20 +80,21 @@
 
 			$obj->url = $hyperlink;
 
-			//$keywordArray = $this->getKeywords($html, $tags);
+			$keywordArray = $this->getKeywords($html, $tags);
+			$this->removeStopWords($keywordArray);
+			//print_r($keywordArray);
 			
 
-			//insert the url into the database
+/*			//insert the url into the database
 			$id = $obj->saveUrls();
 			$ref_id = $id[0][0];
 
+			//if the url is successfully inserted into the database, next extract all the keywords and insert it into the database
 			if($ref_id > 0){
 
 				//extrack all the keywords from the webpage or URL
 				$keywordArray = $this->getKeywords($html, $tags);
-				//echo "<br><br>";
-				//print_r($keywordArray);
-				//echo "<br><br>";
+
 				$kwDatabase = $obj->selectAllKeywords();
 				$resultDKW = array();
 				$resultKWI = array();
@@ -132,7 +133,7 @@
 					$obj->saveKeyword($ref_id, $result);
                 }
 			}
-
+*/
 			/*$plain =  file_get_html($hyperlink); 
 			print_r( $plain);*/
 			/*//Iterate over the extracted links and display their URLs
@@ -164,7 +165,9 @@
 			//preg_match('~<body[^>]*>(.*?)</body>~si', $html, $url_body);
 			$meta    = array( ";", ">", ">>", ";", "*", "?", "&", "|", ":", "(", ")", ".", "'", ",", "{", "}", "“","”", "+", "‘","’" );
 			$url_body = str_replace($meta, '', $url_body);
+			//$url_body = preg_replace("/[^a-zA-Z 0-9]+/", "", $url_body);
 			$url_body = preg_replace("/[^a-zA-Z 0-9]+/", "", $url_body);
+			$url_body = preg_replace("/ ?\b[^ ]*[0-9][^ ]*\b/i", "", $url_body);
 			$url_body = explode(" ", $url_body);
 			$url_body = array_unique(array_map("StrToLower",$url_body));
 			$url_body = array_filter($url_body);
@@ -197,6 +200,25 @@
 
 			return $keywordArray;
 		 } 
+
+
+
+		 public function removeStopWords($array)
+		 {
+		 	$words = array();
+		 	$file = fopen("stopwords.txt", "r");
+			while (!feof($file)) {
+				$line = fgets($file);
+				array_push($words, trim($line));
+				//echo ($line);
+			}
+			fclose($file);
+			print_r($words);
+			echo "<br>";
+			echo "<br>";
+
+			print_r($array);
+		 }
 	}
 
 ?>

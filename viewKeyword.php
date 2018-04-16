@@ -32,6 +32,12 @@
 	<div class="row">
 		<table class="table table-bordered table-hover dataTable pull-center" id ="game_table">
 
+			<colgroup>
+       				<col span="1" style="width: 5%;">
+       				<col span="1" style="width: 30%;">
+       				<col span="1" style="width: 25%;">
+					<col span="1" style="width: 40%;">
+    		</colgroup>	
 			
 			<thead>
 				<tr>
