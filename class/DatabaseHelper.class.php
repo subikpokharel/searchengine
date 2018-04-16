@@ -65,8 +65,6 @@
 
 
 		public function insertDuplicateKeywords($id, $array){
-			//$array = array_unique(array_map("StrToLower",$array));
-			//print_r($array);
 			$sql = "INSERT INTO tbl_www_index (kw_id, url_id) VALUES ";
 			foreach ($array as $a)
 				$sql = $sql."('$a','$id'),";
@@ -81,12 +79,23 @@
 
 
 		public function selectAllKeys($id){
-			/*$sql = "SELECT a.url_id,b.url, b.title, b.description, c.keyword FROM tbl_www_index a ";
-			$sql .= "JOIN tbl_urls b ON a.url_id = b.url_id ";
-			$sql .= "JOIN tbl_keywords c ON a.kw_id = c.kw_id ";
-			//echo $sql;*/
 
-			$sql = "SELECT c.keyword FROM tbl_www_index a JOIN tbl_keywords c ON a.kw_id = c.kw_id where a.url_id = $id ";
+			$sql = "SELECT c.keyword, c.kw_id FROM tbl_www_index a JOIN tbl_keywords c ON a.kw_id = c.kw_id where a.url_id = $id ";
+			return($this->select_query($sql));
+		}
+	
+		public function selectKeywordById($id){
+			$sql = "SELECT a.url_id,b.url, b.title, b.description, c.keyword FROM tbl_www_index a ";
+			$sql .= "JOIN tbl_urls b ON a.url_id = b.url_id ";
+			$sql .= "JOIN tbl_keywords c ON a.kw_id = c.kw_id where a.kw_id in ($id);";
+			//echo $sql;
+
+			return($this->select_query($sql));
+		}
+		//selectUrlById
+		public function selectUrlById($id){
+			$sql = "SELECT * FROM tbl_urls WHERE url_id = ($id);";
+			//echo $sql;S
 			return($this->select_query($sql));
 		}
 	}

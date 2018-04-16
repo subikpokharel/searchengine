@@ -23,15 +23,18 @@
 <div id="box-body">
 	<div class="row">
 		<table class="table table-bordered table-hover dataTable pull-center" id ="game_table">
+
+			
 			<thead>
 				<tr>
-    					<th>Sl.No</th>
-    					<th>URL</th> 
-    					<th>Title</th>
+    				<th>Sl.No</th>
+    				<th>URL</th> 
+    				<th>Title</th>
 					<th>Description</th>
 					<th>Keywords</th>
   				</tr>
 			</thead>
+			
 			<tbody>
 				<?php  $i = 1;foreach ($datalist as $dl) {?>
 					<tr class="odd gradeX" align="justify">
@@ -43,7 +46,7 @@
 							$keyList = $data->selectAllKeys($id);
 							$j = 0;	$length = sizeof($keyList);
 						?>
-						<td><?php  foreach ($keyList as $kl) {?><a href = "."><span><strong><?php echo $kl['keyword'];?></strong></span></a>
+						<td><?php  foreach ($keyList as $kl) {?><a href = "viewKeyword.php?id=<?php echo $kl['kw_id']; ?>"><span><strong><?php echo $kl['keyword'];?></strong></span></a>
 							<?php $j++;
 							 	if($j<$length)
 									echo ', ';
