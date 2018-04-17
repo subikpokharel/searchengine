@@ -36,7 +36,7 @@
 				$sql = $sql."('$kw'),";
 			}
 			$sql = substr($sql, 0, strlen($sql)-1);	
-			echo($sql);
+			//echo($sql);
 			$result = $this->execute_sql($sql);
 			if($result == 1){
 				$sql = "SELECT kw_id FROM tbl_keywords WHERE keyword in (";
@@ -45,9 +45,9 @@
 		        }
 				$sql = substr($sql, 0, strlen($sql)-1);
 				$sql = $sql.")";
-				echo $sql;
+				//echo $sql;
 				$ids = $this->select_query($sql);
-				print_r($ids);
+				//print_r($ids);
 				$ref_id = array();
 				foreach($ids as $value)
 					array_push($ref_id, $value[0]);
@@ -57,7 +57,7 @@
         	    	$sql = $sql."('$ri','$id'),";
 	        	}
                 $sql = substr($sql, 0, strlen($sql)-1);
-                echo $sql;
+                //echo $sql;
                 $this->execute_sql($sql);
 			}
 
@@ -69,7 +69,7 @@
 			foreach ($array as $a)
 				$sql = $sql."('$a','$id'),";
 			$sql = substr($sql, 0, strlen($sql)-1);
-			echo $sql;
+			//echo $sql;
 			$this->execute_sql($sql);
 		}
 

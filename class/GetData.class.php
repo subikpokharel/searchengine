@@ -19,9 +19,26 @@
 				$this->url= str_replace( $meta, "", $this->url );
 
 				if (filter_var($this->url, FILTER_VALIDATE_URL)) {
-				    $this->extractData($this->url);
+					$urls = array();
+					array_push($urls, $this->url);
+					$length = sizeof($urls);
+					//echo($length);
+					for($i = 0; $i<$length; $i++){
+				    	//echo "<br>".$i;//."  ".$links[$i];
+				    	$temp = $this->extractData($urls[$i]);
+				    	
+				    	if ($length < 100) {
+				    		$temp = array_merge(array_diff($temp, $urls));
+				    		foreach ($temp as $t) {
+					    		array_push($urls, $t);
+					    	}
+				    		$length = $length + sizeof($temp);
+				    	}
+				    }
+				    return sizeof($urls)." data entered successfully";
+				    //$this->extractData($this->url);
 				} else 
-				    return ("$url is not a valid URL");
+				    return ("$this->url is not a valid URL");
 			}else
 				return "Failed to Load Data";
 			
@@ -70,6 +87,7 @@
 			$keywordArray = $this->removeStopWords($tempKeywordArray);
 			print_r($keywordArray);*/
 			
+			$links = array();
 
 			//insert the url into the database
 			$id = $obj->saveUrls();
@@ -80,7 +98,9 @@
 
 				//extrack all the keywords from the webpage or URL
 				//$keywordArray = $this->getKeywords($html, $tags);
-				$tempKeywordArray = $this->getKeywords($html, $tags);
+				//extracting the body of the url
+				$body = strip_tags(html_entity_decode($html));
+				$tempKeywordArray = $this->getKeywords($body, $tags);
 				$keywordArray = $this->removeStopWords($tempKeywordArray);
 
 				$kwDatabase = $obj->selectAllKeywords();
@@ -108,30 +128,30 @@
 				if(sizeof($duplicate_ids)>0){
 					//echo "We have duplicates";
 					$duplicate_ids = array_unique($duplicate_ids);
-					echo "<br> Duplicates";
-					print_r($duplicate_ids);
+					//echo "<br> Duplicates";
+					//print_r($duplicate_ids);
 					$obj->insertDuplicateKeywords($ref_id, $duplicate_ids);
 				}
 				//insert keywords
 				if(sizeof($result)>0){
                 	//echo "We have new data";
                 	$result = array_unique($result);
-                	echo "<br>New Keys";
-                	print_r($result);
+                	//echo "<br>New Keys";
+                	//print_r($result);
 					$obj->saveKeyword($ref_id, $result);
                 }
+
+                $links = $this->extractUrls($hyperlink);
 			}
 
-			$links = $this->extractUrls($hyperlink);
-			print_r($links);
+			return $links;
 		}
 
 
 
-		private function getKeywords($html, $tags)
+		private function getKeywords($url_body, $tags)
 		 {
-		 	//extracting the body of the url
-			$url_body = strip_tags(html_entity_decode($html));
+		 	
 			//preg_match('~<body[^>]*>(.*?)</body>~si', $html, $url_body);
 			$meta    = array( ";", ">", ">>", ";", "*", "?", "&", "|", ":", "(", ")", ".", "'", ",", "{", "}", "“","”", "+", "‘","’" );
 			$url_body = str_replace($meta, '', $url_body);
@@ -155,7 +175,7 @@
 
 			//remove empty strings and long words
 			foreach ($keywordTemp as $key=>&$value) {
-				    if (strlen($value) > 30 || strlen($value) < 3  || !preg_match('/\S/', $value)) {
+				if (strlen($value) > 30 || strlen($value) < 3  || !preg_match('/\S/', $value)) {
 			        unset($keywordTemp[$key]);
 			    }
 			}
