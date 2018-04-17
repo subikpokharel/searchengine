@@ -30,7 +30,7 @@
 					<ul class="nav navbar-nav">
 
 						<li class="dropdown user user-menu">
-							<a href="reset.php">
+							<a href="reset.php"  onclick="return confirm('YOU ARE ABOUT TO CLEAR THE DATABASE?')">
 								<span class="hidden-xs btn btn-danger">Reset The System</span>
 							</a>
 						</li>
