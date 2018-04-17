@@ -20,24 +20,10 @@
 
 				if (filter_var($this->url, FILTER_VALIDATE_URL)) {
 				    $this->extractData($this->url);
-				} else {
+				} else 
 				    return ("$url is not a valid URL");
-				}
-				//$this->extractData($this->url);
-
-				/*
-				if (filter_var($url, FILTER_VALIDATE_URL)) {
-    echo("$url is a valid URL");
-} else {
-    echo("$url is not a valid URL");
-}
-				if($links->length > 0)
-					return "Data success";
-				else
-					return "No Data in the URL entered";*/
-			}else{
+			}else
 				return "Failed to Load Data";
-			}
 			
 		}
 
@@ -61,7 +47,7 @@
 			//like 'img' or 'table', to extract other tags.
 			$links = $dom->getElementsByTagName('a');
 			
-			//extracting title from the hyperlink
+			//extracting title from the dom document
 			$nodes = $dom->getElementsByTagName('title');
 			if (isset($nodes->item(0)->nodeValue) && trim($nodes->item(0)->nodeValue) != '') {
 				$obj->title = $nodes->item(0)->nodeValue;
@@ -136,31 +122,13 @@
                 }
 			}
 
-			/*$plain =  file_get_html($hyperlink); 
-			print_r( $plain);*/
-			/*//Iterate over the extracted links and display their URLs
-                        foreach ($links as $link){
-                         	//Extract and show the "href" attribute.
-				if($link->nodeValue != NULL && !empty($link->nodeValue) && !is_null($link->nodeValue)){
-					echo $link->nodeValue; echo "--------->\t";
-					echo $link->getAttribute('href'), '<br>';
-				}
-                        }	*/
-
-			/*$links_array = array();
-			 foreach ($links as $link){
-                                //Extract and show the "href" attribute.
-				//$link = $l;// trim($l);
-                                if(trim($link->nodeValue) != NULL && !empty($link->nodeValue)){
-                                        echo $link->nodeValue; echo "--------->\t";
-                                        echo $link->getAttribute('href'), '<br>';
-                                }
-                        }*/	
+			$links = $this->extractUrls($hyperlink);
+			print_r($links);
 		}
 
 
 
-		public function getKeywords($html, $tags)
+		private function getKeywords($html, $tags)
 		 {
 		 	//extracting the body of the url
 			$url_body = strip_tags(html_entity_decode($html));
@@ -191,13 +159,7 @@
 			        unset($keywordTemp[$key]);
 			    }
 			}
-			$keywordArray = array_merge($keywordTemp);
-			/*echo mb_convert_encoding($keywordArray, 'ISO-8859-1','utf-8');
-			echo "<br><br>";
-			echo mb_convert_encoding($keywordArray, 'HTML-ENTITIES', 'utf-8')."\n\n";
-			echo "<br><br>";
-			echo htmlspecialchars_decode(utf8_decode(htmlentities($keywordArray, ENT_COMPAT, 'utf-8', false)));*/
-			
+			$keywordArray = array_merge($keywordTemp);			
 			$keywordArray =  array_map("utf8_encode", $keywordArray );
 
 			return $keywordArray;
@@ -205,7 +167,7 @@
 
 
 
-		 public function removeStopWords($array)
+		 private function removeStopWords($array)
 		 {
 		 	$words = array();
 		 	$file = fopen("stopwords.txt", "r");
@@ -221,6 +183,34 @@
 			return $result_array;
 
 
+		 }
+
+		 private function extractUrls($hyperlink){
+
+		 	/*echo "<br><br>";
+			echo "File dump URLs".'<br>';*/
+
+			//$cmd = "lynx -dump '" . $hyperlink . "' > result.txt";
+			$cmd = "lynx -listonly -nonumbers -dump '" . $hyperlink . "' > hyperlink.txt";
+			system( "chmod 777 result.txt" );
+			system( $cmd );
+			system( "chmod 755 result.txt" );
+
+			$link = array();
+			$file = fopen( "hyperlink.txt", "r" );
+			while ( !feof( $file ) ) {
+				$line = fgets( $file );
+				//
+				if (filter_var(trim($line), FILTER_VALIDATE_URL)) {
+				    array_push($link, trim($line));
+				}
+			}
+
+			/*print_r($link);
+			echo "<br><br>";*/
+			$link = array_merge(array_unique($link));
+			//print_r(($link));
+			return $link;
 		 }
 	}
 
