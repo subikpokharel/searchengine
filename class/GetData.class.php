@@ -27,13 +27,13 @@
 				    	//echo "<br>".$i;//."  ".$links[$i];
 				    	$temp = $this->extractData($urls[$i]);
 				    	
-				    	if ($length < 100) {
+				    	//if ($length < 100) {
 				    		$temp = array_merge(array_diff($temp, $urls));
 				    		foreach ($temp as $t) {
 					    		array_push($urls, $t);
 					    	}
 				    		$length = $length + sizeof($temp);
-				    	}
+				    	//}
 				    }
 				    return sizeof($urls)." data entered successfully";
 				    //$this->extractData($this->url);
@@ -153,12 +153,13 @@
 		 {
 		 	
 			//preg_match('~<body[^>]*>(.*?)</body>~si', $html, $url_body);
-			$meta    = array( ";", ">", ">>", ";", "*", "?", "&", "|", ":", "(", ")", ".", "'", ",", "{", "}", "“","”", "+", "‘","’" );
+			$meta    = array( ";", ">", ">>", ":", "*", "?", "&", "|", "(", ")", "'", "{", "}", "“","”", "+", "‘","’" );
 			$url_body = str_replace($meta, '', $url_body);
 			//$url_body = preg_replace("/[^a-zA-Z 0-9]+/", "", $url_body);
 			$url_body = preg_replace("/[^a-zA-Z 0-9]+/", "", $url_body);
 			$url_body = preg_replace("/ ?\b[^ ]*[0-9][^ ]*\b/i", "", $url_body);
-			$url_body = explode(" ", $url_body);
+			$url_body = $this->explodeX(array(' ', ',', '.' ), $url_body);
+			//$url_body = explode(" ", $url_body);
 			$url_body = array_unique(array_map("StrToLower",$url_body));
 			$url_body = array_filter($url_body);
 
@@ -232,6 +233,13 @@
 			//print_r(($link));
 			return $link;
 		 }
+
+
+
+		 private function explodeX( $delimiters, $string )
+		{
+		    return explode( chr( 1 ), str_replace( $delimiters, chr( 1 ), $string ) );
+		}
 	}
 
 ?>

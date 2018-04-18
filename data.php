@@ -22,7 +22,7 @@
 <br/>
 <div id="box-body">
 	<div class="row">
-		<table class="table table-bordered table-hover dataTable pull-center" id ="game_table">
+		<table class="table table-bordered table-hover dataTable pull-center">
 
 			<colgroup>
        				<col span="1" style="width: 5%;">
