@@ -24,7 +24,7 @@
 	</div>
 
 	<br/><br/>
-	<div class="container">
+	<div class="container" style="display: none;" id="searched_result">
 		<table class="table table-bordered table-hover dataTable pull-center"  >
 
 			<colgroup>
