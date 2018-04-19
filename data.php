@@ -33,10 +33,10 @@
 			
 			<thead>
 				<tr>
-    				<th>Sl.No</th>
-    				<th>URL</th> 
-    				<th>Title</th>
-					<th>Description</th>
+    				<th style="text-align: center;">Sl.No</th>
+    				<th style="text-align: center;">URL</th> 
+    				<th style="text-align: center;">Title</th>
+					<th style="text-align: center;">Description</th>
   				</tr>
 			</thead>
 			

@@ -43,7 +43,7 @@
 
 
 	<?php if (isset($received)) {?>
-		<div class="alert alert-danger alert-dismissable col-md-8">
+		<div class="alert alert-success alert-dismissable col-md-8">
 			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 			<?php echo $received;?>
 		</div>

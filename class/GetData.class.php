@@ -4,12 +4,7 @@
 	require_once "DatabaseHelper.class.php";
 	//$object = new DatabaseHelper();
 	class GetData{
-		public $url, $action;
-		//public $object = new DatabaseHelper();
-
-		/*public function __construct(){
-			$obj = new DatabaseHelper();
-		}*/
+		public $url, $action, $length;
 
 		public function getData(){
 			$time_start = microtime(true); 
@@ -22,18 +17,18 @@
 				if (filter_var($this->url, FILTER_VALIDATE_URL)) {
 					$urls = array();
 					array_push($urls, $this->url);
-					$length = sizeof($urls);
+					$this->length = sizeof($urls);
 					//echo($length);
-					for($i = 0; $i<$length; $i++){
+					for($i = 0; $i<=$this->length; $i++){
 				    	//echo "<br>".$i;//."  ".$links[$i];
 				    	$temp = $this->extractData($urls[$i]);
 				    	
-				    	if ($length < 100) {
+				    	if ($this->length < 50) {
 				    		$temp = array_merge(array_diff($temp, $urls));
 				    		foreach ($temp as $t) {
 					    		array_push($urls, $t);
 					    	}
-				    		$length = $length + sizeof($temp);
+				    		$this->length = $this->length + sizeof($temp);
 				    	}
 				    }
 
@@ -48,7 +43,7 @@
 			$execution_time = ($time_end - $time_start);
 
 			//execution time of the script
-			return '<b>Total Execution Time:</b> '.$execution_time.' seconds';
+			return '<b>Total Execution Time to insert '. $this->length .' data is:</b> '.$execution_time.' seconds';
 			
 		}
 
@@ -67,10 +62,6 @@
 			//Parse the HTML. The @ is used to suppress any parsing errors
 			//that will be thrown if the $html string isn't valid XHTML.
 			@$dom->loadHTML($html);
-
-			//Get all links. You could also use any other tag name here,
-			//like 'img' or 'table', to extract other tags.
-			$links = $dom->getElementsByTagName('a');
 			
 			//extracting title from the dom document
 			$nodes = $dom->getElementsByTagName('title');
@@ -91,10 +82,6 @@
 
 			$obj->url = $hyperlink;
 
-			/*$tempKeywordArray = $this->getKeywords($html, $tags);
-			$keywordArray = $this->removeStopWords($tempKeywordArray);
-			print_r($keywordArray);*/
-			
 			$links = array();
 
 			//insert the url into the database
@@ -104,11 +91,11 @@
 			//if the url is successfully inserted into the database, next extract all the keywords and insert it into the database
 			if($ref_id > 0){
 
-				//extrack all the keywords from the webpage or URL
-				//$keywordArray = $this->getKeywords($html, $tags);
 				//extracting the body of the url
 				$body = strip_tags(html_entity_decode($html));
+				//extrack all the keywords from the webpage or URL
 				$tempKeywordArray = $this->getKeywords($body, $tags);
+				//remove all the stopwords from the keywords array
 				$keywordArray = $this->removeStopWords($tempKeywordArray);
 
 				$kwDatabase = $obj->selectAllKeywords();
@@ -134,18 +121,12 @@
 
 				//insertduplicatekeyword
 				if(sizeof($duplicate_ids)>0){
-					//echo "We have duplicates";
 					$duplicate_ids = array_unique($duplicate_ids);
-					//echo "<br> Duplicates";
-					//print_r($duplicate_ids);
 					$obj->insertDuplicateKeywords($ref_id, $duplicate_ids);
 				}
 				//insert keywords
 				if(sizeof($result)>0){
-                	//echo "We have new data";
                 	$result = array_unique($result);
-                	//echo "<br>New Keys";
-                	//print_r($result);
 					$obj->saveKeyword($ref_id, $result);
                 }
 
@@ -160,14 +141,13 @@
 		private function getKeywords($url_body, $tags)
 		 {
 		 	
-			//preg_match('~<body[^>]*>(.*?)</body>~si', $html, $url_body);
 			$meta    = array( ";", ">", ">>", ":", "*", "?", "&", "|", "(", ")", "'", "{", "}", "“","”", "+", "‘","’" );
 			$url_body = str_replace($meta, '', $url_body);
-			//$url_body = preg_replace("/[^a-zA-Z 0-9]+/", "", $url_body);
+			//if other than alpha-numeric character, replace by ""
 			$url_body = preg_replace("/[^a-zA-Z 0-9]+/", "", $url_body);
+			//only extract alphabets words
 			$url_body = preg_replace("/ ?\b[^ ]*[0-9][^ ]*\b/i", "", $url_body);
 			$url_body = $this->explodeX(array(' ', ',', '.' ), $url_body);
-			//$url_body = explode(" ", $url_body);
 			$url_body = array_unique(array_map("StrToLower",$url_body));
 			$url_body = array_filter($url_body);
 
@@ -183,7 +163,7 @@
 			$keywordTemp = array_map('trim',$keywordTemp);
 
 			//remove empty strings and long words
-			foreach ($keywordTemp as $key=>&$value) {
+			foreach ($keywordTemp as $key => $value) {
 				if (strlen($value) > 30 || strlen($value) < 3  || !preg_match('/\S/', $value)) {
 			        unset($keywordTemp[$key]);
 			    }
@@ -192,6 +172,7 @@
 			$keywordArray =  array_map("utf8_encode", $keywordArray );
 
 			return $keywordArray;
+
 		 } 
 
 
@@ -216,10 +197,6 @@
 
 		 private function extractUrls($hyperlink){
 
-		 	/*echo "<br><br>";
-			echo "File dump URLs".'<br>';*/
-
-			//$cmd = "lynx -dump '" . $hyperlink . "' > result.txt";
 			$cmd = "lynx -listonly -nonumbers -dump '" . $hyperlink . "' > hyperlink.txt";
 			system( "chmod 777 result.txt" );
 			system( $cmd );
@@ -235,10 +212,7 @@
 				}
 			}
 
-			/*print_r($link);
-			echo "<br><br>";*/
 			$link = array_merge(array_unique($link));
-			//print_r(($link));
 			return $link;
 		 }
 

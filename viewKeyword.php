@@ -30,7 +30,7 @@
 <br/>
 <div id="box-body">
 	<div class="row">
-		<table class="table table-bordered table-hover dataTable pull-center" id ="game_table">
+		<table class="table table-bordered table-hover dataTable pull-center">
 
 			<colgroup>
        				<col span="1" style="width: 5%;">
@@ -41,10 +41,10 @@
 			
 			<thead>
 				<tr>
-    				<th>Sl.No</th>
-    				<th>URL</th> 
-    				<th>Title</th>
-					<th>Description</th>
+    				<th style="text-align: center;">Sl.No</th>
+    				<th style="text-align: center;">URL</th> 
+    				<th style="text-align: center;">Title</th>
+					<th style="text-align: center;">Description</th>
   				</tr>
 			</thead>
 			
