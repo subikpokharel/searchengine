@@ -19,11 +19,11 @@
 					array_push($urls, $this->url);
 					$this->length = sizeof($urls);
 					//echo($length);
-					for($i = 0; $i<=$this->length; $i++){
+					for($i = 0; $i<$this->length; $i++){
 				    	//echo "<br>".$i;//."  ".$links[$i];
 				    	$temp = $this->extractData($urls[$i]);
 				    	
-				    	if ($this->length < 50) {
+				    	if ($this->length < 5) {
 				    		$temp = array_merge(array_diff($temp, $urls));
 				    		foreach ($temp as $t) {
 					    		array_push($urls, $t);

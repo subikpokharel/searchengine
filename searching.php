@@ -2,22 +2,54 @@
 
 	require_once('header_searching.php');
 
+	require_once('class/Search.class.php');
+
+	$data = new Search();
+
+
+
+	if (isset($_POST['btnSearch'])) {
+	//	print_r($_POST);
+		$err = array();
+
+		if (isset($_POST['keywordBar']) && !empty($_POST['keywordBar'])) {
+			$keywords =  $_POST['keywordBar'];
+			//$data->action = $_POST['searchData'];
+		} else {
+			$err['keywordBar'] = "Please enter a keyword";
+		}
+
+
+		if (count($err) == 0) {
+			$data->getData($keywords);
+		}
+	}
+
 
 	
 ?>
 
 </br>
 
+<div class = "row" style=" margin-top:50px;">
+	<div class = "col-md-2"></div>
+	<?php if (isset($err['keywordBar'])) {?>
+		<div class="alert alert-danger alert-dismissable col-md-8">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			<?php echo $err['keywordBar'];?>
+		</div>
+	<?php }?>
+</div>
 
 <div class = "row">
 	<div class = "col-md-2"></div>
 	<div class="box-tools ">
-		<form method="post" id="Search_Bar">   <!-- action="../../cgi-bin/GetData.pl" -->
-			<input type="hidden" class="form-control" name = "action" value="getData">
+		<form method="post" id="Keyword_Bar">   <!-- action="../../cgi-bin/GetData.pl" -->
+			<input type="hidden" class="form-control" name = "action" value="searchData">
 			<div class="input-group input-group-lg col-md-8 ">
-                		<input type="text" name="searchBar" class="form-control" placeholder="Enter the keywords to be searched..."/>
+                		<input type="text" name="keywordBar" class="form-control" placeholder="Enter the keywords to be searched..."/>
 				<div class="input-group-btn">
-					<button type="submit" class="btn btn-default" name="btnSubmit"><i>Search</i></button>
+					<button type="submit" class="btn btn-default" name="btnSearch"><i>Search</i></button>
                   		</div>
                 	</div>
 		</form>
