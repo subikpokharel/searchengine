@@ -12,6 +12,7 @@
 		}*/
 
 		public function getData(){
+			$time_start = microtime(true); 
 			if ($this->action == "getData") {
 				$this->url = trim($this->url);
 				# For security, remove some Unix metacharacters.
@@ -27,20 +28,27 @@
 				    	//echo "<br>".$i;//."  ".$links[$i];
 				    	$temp = $this->extractData($urls[$i]);
 				    	
-				    	//if ($length < 100) {
+				    	if ($length < 100) {
 				    		$temp = array_merge(array_diff($temp, $urls));
 				    		foreach ($temp as $t) {
 					    		array_push($urls, $t);
 					    	}
 				    		$length = $length + sizeof($temp);
-				    	//}
+				    	}
 				    }
-				    return sizeof($urls)." data entered successfully";
+
+				    //return sizeof($urls)." data entered successfully";
 				    //$this->extractData($this->url);
-				} else 
-				    return ("$this->url is not a valid URL");
-			}else
-				return "Failed to Load Data";
+				} //else 
+				    //return ("$this->url is not a valid URL");
+			}
+			$time_end = microtime(true);
+
+			//dividing with 60 will give the execution time in minutes otherwise seconds
+			$execution_time = ($time_end - $time_start);
+
+			//execution time of the script
+			return '<b>Total Execution Time:</b> '.$execution_time.' seconds';
 			
 		}
 
