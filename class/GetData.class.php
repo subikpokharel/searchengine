@@ -39,16 +39,17 @@
 
 				    //return sizeof($urls)." data entered successfully";
 				    //$this->extractData($this->url);
-				} //else 
-				    //return ("$this->url is not a valid URL");
+				    $time_end = microtime(true);
+
+					//dividing with 60 will give the execution time in minutes otherwise seconds
+					$execution_time = ($time_end - $time_start);
+
+					//execution time of the script
+					return '<b>Total Execution Time to insert '. $this->pages .' data is:</b> '.$execution_time.' seconds';
+				} else 
+				    return ("$this->url is not a valid URL");
 			}
-			$time_end = microtime(true);
-
-			//dividing with 60 will give the execution time in minutes otherwise seconds
-			$execution_time = ($time_end - $time_start);
-
-			//execution time of the script
-			return '<b>Total Execution Time to insert '. $this->pages .' data is:</b> '.$execution_time.' seconds';
+			
 			
 		}
 

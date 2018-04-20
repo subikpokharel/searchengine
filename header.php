@@ -46,8 +46,8 @@
 				<nav class="navbar navbar-static-top pull-right">
 					<ul class="nav navbar-nav">
 						<li class="dropdown user user-menu">
-							<a href="searching.php">
-								<span class="hidden-xs"><b><i>Search Interface</i></b></span>
+							<a href="insertData.php">
+								<span class="hidden-xs"><b><i>Insert Interface</i></b></span>
 							</a>
 						</li>
 					</ul>
