@@ -21,7 +21,8 @@
 
 
 		if (count($err) == 0) {
-			$data->getData($keywords);
+			$result = $data->getData($keywords);
+			//print_r($result);
 		}
 	}
 
@@ -56,7 +57,7 @@
 	</div>
 
 	<br/><br/>
-	<div class="container" style="display: none;" id="searched_result">
+	<div class="container"> <!-- style="display: none;" id="searched_result"> !-->
 		<table class="table table-bordered table-hover dataTable pull-center"  >
 
 			<colgroup>
@@ -76,7 +77,16 @@
 			</thead>
 			
 			<tbody>
-	
+				<?php  $i = 1;foreach ($result as $dl) {?>
+					<tr class="odd gradeX" align="justify">
+						<td ><?php echo $i;?></td>
+					    <td><a href="viewUrl.php?id=<?php echo($dl['url_id']); ?>"><strong><?php echo $dl['url'];?></strong></a></td>
+					    <td><?php echo $dl['title'];?></td>
+						<td><?php echo $dl['description'];?></td>
+						
+					</tr>
+
+				<?php $i++;}?>
 			</tbody>
 	</div>
 	<div class = "col-md-2"></div>

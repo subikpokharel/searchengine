@@ -6,12 +6,20 @@
 		
 
 		public function getData($keywords){
-
-			print_r($keywords);
+			$obj = new DatabaseHelper();
+			$search_keys = array_unique(array_filter(explode(" ", $keywords)));
+			$result = $obj->search($search_keys);
+			//print_r($result);
+			return $result;
 		}
 
 
 
 	}
+
+
+/*
+
+*/
 
 ?>

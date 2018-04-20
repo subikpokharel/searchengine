@@ -98,5 +98,99 @@
 			//echo $sql;S
 			return($this->select_query($sql));
 		}
+
+		public function search($keyword){
+			//print_r($keyword);
+			$output = array();
+			//for each keyword entered by the uer extract the data for each keywords
+			foreach ($keyword as $key) {
+				$sql = "SELECT DISTINCT (a.url_id),b.url, b.title, b.description FROM tbl_www_index a ";
+				$sql .= " JOIN tbl_urls b ON a.url_id = b.url_id JOIN tbl_keywords c ON a.kw_id = c.kw_id ";
+				$sql .= " where c.keyword LIKE '%".$key."%' ORDER BY CASE ";
+				$sql .= " WHEN c.keyword LIKE '".$key."' THEN 0 WHEN c.keyword LIKE '".$key."%' THEN 1 ";
+				$sql .= " WHEN c.keyword LIKE '%".$key."%' THEN 2  WHEN c.keyword LIKE '%".$key."' THEN 3 ";
+				$sql .= " ELSE 4 END";
+				//echo $sql;
+				//echo "<br>";
+				$result = ($this->select_query($sql));
+				//store the output into array
+				foreach ($result as $r) {
+					array_push($output, $r);
+				}
+				//print_r($result);
+				//echo "<br><br>";
+				//echo(sizeof($output));
+			}
+
+			//echo "<br><br>";
+			//print_r($output);
+			$temp = array();
+			//echo "<br><br>";
+			//extract the url_id from the output
+			foreach ($output as $key ) {
+				//echo($key['url_id']);
+				array_push($temp, $key['url_id']);
+				//echo "<br>";
+			}
+
+			//count the number of each url_id returned from the database
+			$temp = (array_count_values($temp));
+			//print_r($temp);
+			//sort the count in descending order
+			arsort($temp);
+			//print_r($temp);
+			//echo "<br><br>";
+			 //array_map("unserialize", array_unique(array_map("serialize", $output)));
+			//remove the repeated data from the output array
+			$output = (array_map("unserialize", array_unique(array_map("serialize", $output))));
+			$output = array_merge($output);
+			//print_r($output);
+			//echo "<br><br>";
+			//echo(sizeof($output));
+			//echo "<br><br>";
+
+
+			$sorted = array();
+			//$i = 0;
+			//rank the output base on the occurance of keyword in the total urls
+			foreach ($temp as $key => $value) {
+				//echo($i);
+				//echo($key);
+				$i = 0;
+				$id = $key;
+				foreach ($output as $key => $value) {
+
+					/*print_r($output[$i]);
+						echo "<br>";*/
+					if ($value[0] == $id) {
+						array_push($sorted, $output[$i]);
+						//print_r($output[$i]);
+						//echo "<br>";
+					}
+					$i++;	
+				}
+				//echo "<br>";
+			}
+			//echo "<br><br>";
+			//print_r($sorted);
+			return $sorted;
+		}
+
+		/*
+			SELECT DISTINCT (a.url_id),b.url, b.title, b.description
+FROM tbl_www_index a JOIN tbl_urls b ON a.url_id = b.url_id 
+JOIN tbl_keywords c ON a.kw_id = c.kw_id 
+WHERE a.kw_id = c.kw_id AND c.keyword LIKE '%sql%'
+ORDER BY
+	CASE
+		WHEN c.keyword LIKE 'sql' THEN 0  
+		WHEN c.keyword LIKE 'sql%' THEN 1  
+        WHEN c.keyword LIKE '%sql%' THEN 2  
+        WHEN c.keyword LIKE '%sql' THEN 3  
+        ELSE 4
+	END
+
+
+		*/
 	}
 ?>
