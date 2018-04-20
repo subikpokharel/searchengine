@@ -23,7 +23,16 @@
 		}
 
 
+		if (isset($_POST['pages']) && !empty($_POST['pages']) && $_POST['pages']>10) {
+			$data->pages =  $_POST['pages'];
+		} else {
+			$err['searchBar'] = "Please enter Total pages to be extracted";
+		}
+
+
+
 		if (count($err) == 0) {
+			//print_r($_POST);
 			$received = $data->getData();
 		}
 	}
@@ -55,19 +64,32 @@
 
 
 <div class = "row">
-	<div class = "col-md-2"></div>
-	<div class="box-tools ">
-		<form method="post" id="Search_Bar">   <!-- action="../../cgi-bin/GetData.pl" -->
-			<input type="hidden" class="form-control" name = "action" value="getData">
-			<div class="input-group input-group-lg col-md-8 ">
-                		<input type="text" name="searchBar" class="form-control" placeholder="Enter the url for data to be extracted..."/>
-				<div class="input-group-btn">
-					<button type="submit" class="btn btn-default" name="btnSubmit"><i>Submit</i></button>
-                  		</div>
-                	</div>
-		</form>
-	</div>
-	<div class = "col-md-2"></div>
+	<form method="post" id="Search_Bar"> 
+		<div class = "col-md-2"></div>
+		<div class="box-tools ">
+			  <!-- action="../../cgi-bin/GetData.pl" -->
+				<input type="hidden" class="form-control" name = "action" value="getData">
+				<div class="input-group input-group-lg col-md-8 ">
+	                	<input type="text" name="searchBar" class="form-control" placeholder="Enter the url for data to be extracted..."/>
+					<div class="input-group-btn">
+						<button type="submit" class="btn btn-default" name="btnSubmit"><i>Extract Data</i></button>
+	                 </div>
+	            </div>
+		</div>
+		<div class = "col-md-2"></div>
+
+		<br/>	
+
+		<div class = "col-md-4"></div>
+		<div class="box-tools ">
+				<input type="hidden" class="form-control" name = "action" value="getData">
+				<div class="input-group input-group-lg col-md-2 ">
+						<label for="id_pages">Total page limit: <strong>*</strong></label>
+						<input type="number" name="pages" value="100" class="form-control" id="id_pages" placeholder="Page Limit"/>
+	            </div>
+		</div>
+		<div class = "col-md-2"></div>
+	</form>
 </div>
 
 

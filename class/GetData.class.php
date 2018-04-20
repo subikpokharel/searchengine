@@ -4,11 +4,12 @@
 	require_once "DatabaseHelper.class.php";
 	//$object = new DatabaseHelper();
 	class GetData{
-		public $url, $action, $length;
+		public $url, $action, $length, $pages;
 
 		public function getData(){
 			$time_start = microtime(true); 
 			if ($this->action == "getData") {
+				//echo($this->pages);
 				$this->url = trim($this->url);
 				# For security, remove some Unix metacharacters.
 				$meta    = array( ";", ">", ">>", ";", "*", "?", "&", "|" );
@@ -19,17 +20,21 @@
 					array_push($urls, $this->url);
 					$this->length = sizeof($urls);
 					//echo($length);
-					for($i = 0; $i<$this->length; $i++){
+
+					for($i = 0; $i<$this->pages; $i++){
 				    	//echo "<br>".$i;//."  ".$links[$i];
-				    	$temp = $this->extractData($urls[$i]);
+				    	if ($this->length >= $i) {
+				    		$temp = $this->extractData($urls[$i]);
 				    	
-				    	if ($this->length < 5) {
-				    		$temp = array_merge(array_diff($temp, $urls));
-				    		foreach ($temp as $t) {
-					    		array_push($urls, $t);
+					    	if ($this->length < $this->pages) {
+					    		$temp = array_merge(array_diff($temp, $urls));
+					    		foreach ($temp as $t) {
+						    		array_push($urls, $t);
+						    	}
+					    		$this->length = $this->length + sizeof($temp);
 					    	}
-				    		$this->length = $this->length + sizeof($temp);
 				    	}
+				    	
 				    }
 
 				    //return sizeof($urls)." data entered successfully";
@@ -43,7 +48,7 @@
 			$execution_time = ($time_end - $time_start);
 
 			//execution time of the script
-			return '<b>Total Execution Time to insert '. $this->length .' data is:</b> '.$execution_time.' seconds';
+			return '<b>Total Execution Time to insert '. $this->pages .' data is:</b> '.$execution_time.' seconds';
 			
 		}
 
