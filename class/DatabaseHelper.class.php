@@ -175,22 +175,5 @@
 			//print_r($sorted);
 			return $sorted;
 		}
-
-		/*
-			SELECT DISTINCT (a.url_id),b.url, b.title, b.description
-FROM tbl_www_index a JOIN tbl_urls b ON a.url_id = b.url_id 
-JOIN tbl_keywords c ON a.kw_id = c.kw_id 
-WHERE a.kw_id = c.kw_id AND c.keyword LIKE '%sql%'
-ORDER BY
-	CASE
-		WHEN c.keyword LIKE 'sql' THEN 0  
-		WHEN c.keyword LIKE 'sql%' THEN 1  
-        WHEN c.keyword LIKE '%sql%' THEN 2  
-        WHEN c.keyword LIKE '%sql' THEN 3  
-        ELSE 4
-	END
-
-
-		*/
 	}
 ?>
