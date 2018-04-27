@@ -95,9 +95,6 @@
 	<div class = "col-md-2"></div>
 </div>
 
-
-<!-- viewUrl.php?id=<?php echo($dl['url_id']); ?> !-->
-
 <?php
 
 	require_once('footer.php');

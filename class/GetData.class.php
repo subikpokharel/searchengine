@@ -4,7 +4,7 @@
 	require_once "DatabaseHelper.class.php";
 	//$object = new DatabaseHelper();
 	class GetData{
-		public $url, $action, $length, $pages;
+		public $url, $action, $length, $pages, $seed_url;
 
 		public function getData(){
 			$time_start = microtime(true); 
@@ -14,6 +14,7 @@
 				# For security, remove some Unix metacharacters.
 				$meta    = array( ";", ">", ">>", ";", "*", "?", "&", "|" );
 				$this->url= str_replace( $meta, "", $this->url );
+				$this->seed_url = $this->url;
 
 				if (filter_var($this->url, FILTER_VALIDATE_URL)) {
 					$urls = array();
@@ -33,12 +34,8 @@
 						    	}
 					    		$this->length = $this->length + sizeof($temp);
 					    	}
-				    	}
-				    	
+				    	}				    	
 				    }
-
-				    //return sizeof($urls)." data entered successfully";
-				    //$this->extractData($this->url);
 				    $time_end = microtime(true);
 
 					//dividing with 60 will give the execution time in minutes otherwise seconds
@@ -214,11 +211,17 @@
 				$line = fgets( $file );
 				//
 				if (filter_var(trim($line), FILTER_VALIDATE_URL)) {
-				    array_push($link, trim($line));
+					if (strpos($line, $this->seed_url) !== false)
+				    	array_push($link, trim($line));
+				    	/*echo trim($line);
+				    	echo "<br>";*/
 				}
 			}
 
 			$link = array_merge(array_unique($link));
+			//echo "<br><br><br>";
+			//echo $this->seed_url;
+			//print_r($link);
 			return $link;
 		 }
 

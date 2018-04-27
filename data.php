@@ -25,10 +25,11 @@
 		<table class="table table-bordered table-hover dataTable pull-center">
 
 			<colgroup>
-       				<col span="1" style="width: 5%;">
+       				<col span="1" style="width: 2%;">
+       				<col span="1" style="width: 18%;">
        				<col span="1" style="width: 30%;">
-       				<col span="1" style="width: 25%;">
 					<col span="1" style="width: 40%;">
+					<col span="1" style="width: 10%;">
     		</colgroup>	
 			
 			<thead>
@@ -37,6 +38,7 @@
     				<th style="text-align: center;">URL</th> 
     				<th style="text-align: center;">Title</th>
 					<th style="text-align: center;">Description</th>
+					<th style="text-align: right;">Visit Page</th>
   				</tr>
 			</thead>
 			
@@ -47,6 +49,7 @@
 					    <td><a href="viewUrl.php?id=<?php echo($dl['url_id']); ?>"><strong><?php echo $dl['url'];?></strong></a></td>
 					    <td><?php echo $dl['title'];?></td>
 						<td><?php echo $dl['description'];?></td>
+						<td style="float: right;"><a href="<?php echo $dl['url']; ?> " class="btn btn-primary" target="_blank"> Visit page </a>   </td>
 						
 					</tr>
 

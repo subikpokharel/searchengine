@@ -1,5 +1,5 @@
    Visible links
-https://www.w3schools.com/xml/xml_namespaces.asp
+https://www.w3schools.com/xml/xsl_examples.asp
 https://www.w3schools.com/html/default.asp
 https://www.w3schools.com/css/default.asp
 https://www.w3schools.com/js/default.asp
@@ -231,11 +231,26 @@ https://www.w3schools.com/xml/dom_http.asp
 https://www.w3schools.com/xml/dom_parser.asp
 https://www.w3schools.com/xml/xsl_elementref.asp
 https://www.w3schools.com/xml/xsl_functions.asp
-https://www.w3schools.com/xml/xml_attributes.asp
-https://www.w3schools.com/xml/xml_display.asp
-https://www.w3schools.com/xml/xsl_intro.asp
-https://www.w3schools.com/xml/xml_attributes.asp
-https://www.w3schools.com/xml/xml_display.asp
+https://www.w3schools.com/xml/xsl_editxml.asp
+https://www.w3schools.com/xml/xquery_intro.asp
+https://www.w3schools.com/xml/tryxslt.asp?xmlfile=cdcatalog&xsltfile=cdcatalog_ex1
+https://www.w3schools.com/xml/xsl_templates.asp
+https://www.w3schools.com/xml/tryxslt.asp?xmlfile=cdcatalog&xsltfile=cdcatalog_ex2
+https://www.w3schools.com/xml/xsl_value_of.asp
+https://www.w3schools.com/xml/tryxslt.asp?xmlfile=cdcatalog&xsltfile=cdcatalog_ex3
+https://www.w3schools.com/xml/tryxslt.asp?xmlfile=cdcatalog&xsltfile=cdcatalog_filter
+https://www.w3schools.com/xml/xsl_for_each.asp
+https://www.w3schools.com/xml/tryxslt.asp?xmlfile=cdcatalog&xsltfile=cdcatalog_sort
+https://www.w3schools.com/xml/xsl_sort.asp
+https://www.w3schools.com/xml/tryxslt.asp?xmlfile=cdcatalog&xsltfile=cdcatalog_if
+https://www.w3schools.com/xml/xsl_if.asp
+https://www.w3schools.com/xml/tryxslt.asp?xmlfile=cdcatalog&xsltfile=cdcatalog_choose
+https://www.w3schools.com/xml/tryxslt.asp?xmlfile=cdcatalog&xsltfile=cdcatalog_choose2
+https://www.w3schools.com/xml/xsl_choose.asp
+https://www.w3schools.com/xml/tryxslt.asp?xmlfile=cdcatalog&xsltfile=cdcatalog_apply
+https://www.w3schools.com/xml/xsl_apply_templates.asp
+https://www.w3schools.com/xml/xsl_editxml.asp
+https://www.w3schools.com/xml/xquery_intro.asp
 https://www.w3schools.com/colors/colors_picker.asp
 https://www.w3schools.com/colors/colors_picker.asp
 https://www.w3schools.com/howto/default.asp
@@ -311,7 +326,7 @@ https://www.w3schools.com/about/about_copyright.asp
 https://www.w3schools.com/about/about_privacy.asp
 https://www.w3schools.com/about/about_copyright.asp
 https://www.w3schools.com/w3css/
-https://www.w3schools.com/xml/xml_namespaces.asp
+https://www.w3schools.com/xml/xsl_examples.asp
 
    Hidden links:
 javascript:void(0);

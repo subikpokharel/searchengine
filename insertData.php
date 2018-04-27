@@ -6,7 +6,7 @@
 	require_once('class/GetData.class.php');
 	//require_once( 'class/Test.class.php');
 
-
+	//$uk = "http://undcemcs01.und.edu/~wen.chen.hu/course/515/7/2.html";
 	$data = new GetData();
 
 	//$data = new Test();
