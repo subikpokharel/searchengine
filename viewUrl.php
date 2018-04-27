@@ -23,7 +23,7 @@
 
 <br/>
 <div class="box-header with-border">
-              <h2 class="box-title"><strong>  URL : "<font color="#9932CC"><i><?php echo($urdetails[0]['url']); ?></i></font>"</strong></h2>
+              <h2 class="box-title"><strong>  URL : "<font color="#9932CC"><i><a href="<?php  echo($urdetails[0]['url']); ?>" target="_blank"><?php echo($urdetails[0]['url']); ?></a></i></font>"</strong></h2>
 </div>
 <br/>
 <div id="box-body">
